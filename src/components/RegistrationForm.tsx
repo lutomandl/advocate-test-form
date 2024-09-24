@@ -9,6 +9,8 @@ import {
   AlertIcon,
   Stack,
   Spinner,
+  InputGroup,
+  InputRightElement,
 } from '@chakra-ui/react'
 import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -43,6 +45,9 @@ export default function RegistrationForm() {
   const [submitSuccess, setSubmitSuccess] = useState(false)
   const [submitError, setSubmitError] = useState(false)
   const [submitLoading, setSubmitLoading] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
+
+  const toggleShowPassword = () => setShowPassword(!showPassword)
 
   const {
     register,
@@ -91,28 +96,56 @@ export default function RegistrationForm() {
         </Button>
         <FormControl isInvalid={!!errors.fullName}>
           <FormLabel>Full name</FormLabel>
-          <Input {...register('fullName')} />
+          <Input {...register('fullName')} type="name" />
           <FormErrorMessage>
             {errors?.fullName && errors.fullName.message}
           </FormErrorMessage>
         </FormControl>
         <FormControl isInvalid={!!errors.email}>
           <FormLabel>Email</FormLabel>
-          <Input {...register('email')} />
+          <Input {...register('email')} type="email" />
           <FormErrorMessage>
             {errors?.email && errors.email.message}
           </FormErrorMessage>
         </FormControl>
         <FormControl isInvalid={!!errors.password}>
           <FormLabel>Password</FormLabel>
-          <Input {...register('password')} />
+          <InputGroup>
+            <Input
+              {...register('password')}
+              type={showPassword ? 'text' : 'password'}
+            />
+            <InputRightElement width="4.5rem">
+              <Button
+                h="1.75rem"
+                size="sm"
+                onClick={() => toggleShowPassword()}
+              >
+                {showPassword ? 'Hide' : 'Show'}
+              </Button>
+            </InputRightElement>
+          </InputGroup>
           <FormErrorMessage>
             {errors?.password && errors.password.message}
           </FormErrorMessage>
         </FormControl>
         <FormControl isInvalid={!!errors.passwordConfirm}>
           <FormLabel>Password confirmation</FormLabel>
-          <Input {...register('passwordConfirm')} />
+          <InputGroup>
+            <Input
+              {...register('passwordConfirm')}
+              type={showPassword ? 'text' : 'password'}
+            />
+            <InputRightElement width="4.5rem">
+              <Button
+                h="1.75rem"
+                size="sm"
+                onClick={() => toggleShowPassword()}
+              >
+                {showPassword ? 'Hide' : 'Show'}
+              </Button>
+            </InputRightElement>
+          </InputGroup>
           <FormErrorMessage>
             {errors?.passwordConfirm && errors.passwordConfirm.message}
           </FormErrorMessage>
@@ -125,7 +158,7 @@ export default function RegistrationForm() {
         {watch('hasReferralCode') && (
           <FormControl isInvalid={!!errors.referralCode}>
             <FormLabel>Referral code</FormLabel>
-            <Input {...register('referralCode')} />
+            <Input {...register('referralCode')} type="text" />
             <FormErrorMessage>
               {errors?.referralCode && errors.referralCode.message}
             </FormErrorMessage>
