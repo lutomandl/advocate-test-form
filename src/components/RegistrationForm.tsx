@@ -1,24 +1,21 @@
 import {
-  FormControl,
-  FormLabel,
   Input,
   Checkbox,
   Button,
-  FormErrorMessage,
   Alert,
   AlertIcon,
   Stack,
   Spinner,
-  InputGroup,
-  InputRightElement,
 } from '@chakra-ui/react'
 import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { boolean, object, ref, string } from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { RepeatIcon } from '@chakra-ui/icons'
+import FormInput from './FormInput'
+import PasswordInput from './PasswordInput'
 
-type FormValues = {
+export type FormValues = {
   fullName: string
   email: string
   password: string
@@ -45,9 +42,6 @@ export default function RegistrationForm() {
   const [submitSuccess, setSubmitSuccess] = useState(false)
   const [submitError, setSubmitError] = useState(false)
   const [submitLoading, setSubmitLoading] = useState(false)
-  const [showPassword, setShowPassword] = useState(false)
-
-  const toggleShowPassword = () => setShowPassword(!showPassword)
 
   const {
     register,
@@ -94,81 +88,37 @@ export default function RegistrationForm() {
         >
           Reset form
         </Button>
-        <FormControl isInvalid={!!errors.fullName}>
-          <FormLabel>Full name</FormLabel>
+        <FormInput error={errors.fullName?.message} label="Full name">
           <Input {...register('fullName')} type="name" />
-          <FormErrorMessage>
-            {errors?.fullName && errors.fullName.message}
-          </FormErrorMessage>
-        </FormControl>
-        <FormControl isInvalid={!!errors.email}>
-          <FormLabel>Email</FormLabel>
+        </FormInput>
+        <FormInput error={errors.email?.message} label="Email">
           <Input {...register('email')} type="email" />
-          <FormErrorMessage>
-            {errors?.email && errors.email.message}
-          </FormErrorMessage>
-        </FormControl>
-        <FormControl isInvalid={!!errors.password}>
-          <FormLabel>Password</FormLabel>
-          <InputGroup>
-            <Input
-              {...register('password')}
-              type={showPassword ? 'text' : 'password'}
-            />
-            <InputRightElement width="4.5rem">
-              <Button
-                h="1.75rem"
-                size="sm"
-                onClick={() => toggleShowPassword()}
-              >
-                {showPassword ? 'Hide' : 'Show'}
-              </Button>
-            </InputRightElement>
-          </InputGroup>
-          <FormErrorMessage>
-            {errors?.password && errors.password.message}
-          </FormErrorMessage>
-        </FormControl>
-        <FormControl isInvalid={!!errors.passwordConfirm}>
-          <FormLabel>Password confirmation</FormLabel>
-          <InputGroup>
-            <Input
-              {...register('passwordConfirm')}
-              type={showPassword ? 'text' : 'password'}
-            />
-            <InputRightElement width="4.5rem">
-              <Button
-                h="1.75rem"
-                size="sm"
-                onClick={() => toggleShowPassword()}
-              >
-                {showPassword ? 'Hide' : 'Show'}
-              </Button>
-            </InputRightElement>
-          </InputGroup>
-          <FormErrorMessage>
-            {errors?.passwordConfirm && errors.passwordConfirm.message}
-          </FormErrorMessage>
-        </FormControl>
-        <FormControl isInvalid={!!errors.hasReferralCode}>
+        </FormInput>
+        <PasswordInput
+          error={errors.password?.message}
+          label="Password"
+          register={register('password')}
+        />
+        <PasswordInput
+          error={errors.passwordConfirm?.message}
+          label="Password confirmation"
+          register={register('passwordConfirm')}
+        />
+        <FormInput error={errors.hasReferralCode?.message}>
           <Checkbox {...register('hasReferralCode')}>
             I have a referral code
           </Checkbox>
-        </FormControl>
+        </FormInput>
         {watch('hasReferralCode') && (
-          <FormControl isInvalid={!!errors.referralCode}>
-            <FormLabel>Referral code</FormLabel>
+          <FormInput error={errors.referralCode?.message} label="Referral code">
             <Input {...register('referralCode')} type="text" />
-            <FormErrorMessage>
-              {errors?.referralCode && errors.referralCode.message}
-            </FormErrorMessage>
-          </FormControl>
+          </FormInput>
         )}
-        <FormControl>
+        <FormInput>
           <Checkbox {...register('newsletter')}>
             Subscribe to newsletter
           </Checkbox>
-        </FormControl>
+        </FormInput>
         {submitSuccess || submitError ? (
           <>
             <Alert status={submitSuccess ? 'success' : 'error'}>
