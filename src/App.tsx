@@ -5,7 +5,7 @@ import RegistrationForm from './components/RegistrationForm'
 function App() {
   return (
     <Container p="4">
-      <Heading>Registration Form</Heading>
+      <Heading>Registration Form Test</Heading>
       <RegistrationForm />
     </Container>
   )
